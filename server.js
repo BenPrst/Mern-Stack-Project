@@ -3,9 +3,12 @@ const express = require("express");
 require("dotenv").config({ path: "./config/.env" });
 require("./config/db");
 const app = express();
+const postsRoutes = require("./routes/postsController");
+const bodyParser = require("body-parser");
 
 //routes
-// app.use("/api/user", userRoutes);
+app.use(bodyParser.json());
+app.use("/posts", postsRoutes);
 
 //Server
 app.listen(process.env.PORT, () => {
