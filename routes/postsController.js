@@ -14,18 +14,19 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const newRecord = new PostModel({
+    const newRecord = new PostsModel({
       author: req.body.author,
       message: req.body.message,
     });
 
-    newRecord.save((err, docs) => {
-      if (!err) res.send(docs);
-      else log("error creating data : " + err);
-    });
-  } catch {}
+    const savedRecord = await newRecord.save();
+    res.send(savedRecord);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 module.exports = router;
